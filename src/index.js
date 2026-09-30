@@ -3,7 +3,7 @@
 // @author YuriTheCoder
 // @repository https://github.com/YuriTheCoder/archive-book-liberator
 
-const imagesToPdf = require("images-to-pdf");
+const { PDFDocument } = require("pdf-lib");
 const fs = require("fs");
 const path = require("path");
 
@@ -43,7 +43,19 @@ async function createPdf() {
     console.log("[*] Generating PDF...");
 
     try {
-        await imagesToPdf(files, outputPdf);
+        const pdfDoc = await PDFDocument.create();
+        for (const file of files) {
+            const bytes = fs.readFileSync(file);
+            const isPng = path.extname(file).toLowerCase() === ".png";
+            const image = isPng
+                ? await pdfDoc.embedPng(bytes)
+                : await pdfDoc.embedJpg(bytes);
+            const page = pdfDoc.addPage([image.width, image.height]);
+            page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+        }
+        const pdfBytes = await pdfDoc.save();
+        fs.writeFileSync(outputPdf, pdfBytes);
+        
         const stats = fs.statSync(outputPdf);
         const fileSizeMB = (stats.size / (1024 * 1024)).toFixed(2);
         

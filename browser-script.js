@@ -38,6 +38,7 @@
         PAGE_CHANGE_TIMEOUT: 6000,  // Max wait time for page turn (in ms)
         MIN_IMAGE_WIDTH: 300,       // Minimum width to consider image valid
         CHECK_INTERVAL: 200,        // Interval between checks (in ms)
+        DOWNLOAD_DELAY: 1500,       // Pause between file saves (prevents Chrome blocking rapid downloads)
     };
     
     // ========================================================================
@@ -91,6 +92,9 @@
                 successCount++;
                 console.log(`%c ✅ [DOWNLOADED] Page ${pageNum} (${img.naturalWidth}x${img.naturalHeight}px)`, 
                            'color: green; font-weight: bold;');
+                
+                // Give the browser time to actually write the file before continuing
+                await sleep(CONFIG.DOWNLOAD_DELAY);
                 
             } catch (error) {
                 failCount++;

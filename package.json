@@ -28,9 +28,9 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "dependencies": {
-    "images-to-pdf": "^1.0.0"
-  },
   "author": "YuriTheCoder",
-  "contributors": []
+  "contributors": [],
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  }
 }

@@ -41,3 +41,12 @@ tmp/
 temp/
 *.tmp
 
+
+# Book content outputs (not part of the tool)
+book*.epub
+book_ocr.txt
+book*.txt
+build/
+pages_src/
+src/__pycache__/
+__pycache__/
